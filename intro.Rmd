@@ -1,0 +1,81 @@
+---
+title: "Algoritma Data Science Academy"
+author: "Algoritma Team"
+date: "`r Sys.Date()`"
+output: 
+  revealjs::revealjs_presentation:
+    self_contained: false
+    reveal_plugins: ["zoom", "notes", "chalkboard", "menu"]
+    reveal_options:
+      center: true
+      chalkboard: 
+        theme: black
+        toggleNotesButton: true
+      menu:
+        numbers: true
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE,
+  fig.asp = 0.75,
+  fig.align = "center",
+  out.width = "100%",
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(ggplot2)
+library(tidyverse)
+library(plotly)
+
+```
+
+# Algoritma -- Learn Data Science by Building
+
+## **What is Data Science?**
+
+## An act of getting **powerful insights** from data
+
+## **Data Science for Data-driven Industry**
+
+<style>
+.reveal section img { background:none; border:none; box-shadow:none; }
+</style>
+
+![Source: Sharma, 2019](image/Data-Science-use-cases.png)
+
+##
+
+![Source:Jon CohenJan, 2020](image/ncov-wu.png)
+
+## **Multi-disciplinary Field**
+
+![Source: ](image/datascience.jpg)
+
+## **The Toolset**
+
+![](image/rnpy.PNG)
+
+## Why learn R and Python?
+
+![Packages](image/ggplot_hive-removebg.png)
+
+* R & Python widely used in data science 
+* Newbie Friendly
+* Ready for Big Data
+
+##
+
+![](image/compR.png)
+
+* Used by Major Companies
+* Has a Large and Welcoming Community
+* is Open Source
+
+## 
+
+![](image/datascienceflow.jpg)
+
+# Happy Learning and Coding! :)
