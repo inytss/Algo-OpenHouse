@@ -1,7 +1,7 @@
 ---
 title: "'Avocado Price' Analisis"
 author: "Inayatus"
-date: "5/12/2020"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output: 
   html_document:
     toc: true
@@ -11,7 +11,7 @@ output:
     number_sections: true
     df_print: paged
     theme: united
-    highlight: breezedark
+    highlight: zenburn
     code_folding: hide
     css: style.css
 ---
@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       comment = "#>")
 ```
 <center>
-```{r include=FALSE, }
+```{r echo=FALSE}
 knitr::include_graphics("image/avo.gif")
 ```
 </center>
@@ -41,17 +41,17 @@ head(avo)
 
 Deskripsi data:
 
-* `X1` : index data
+* `X` : index data
 * `Date` : tanggal observasi
 * `AveragePrice` : rata-rata harga satuan avocado
-* `Total Volume` : jumlah seluruh avocado yang terjual
-* `4046` : banyaknya avocado dengan jenis PLU 4046 terjual
-* `4225` : banyaknya avocado dengan jenis PLU 4225 terjual
-* `4770` : banyaknya avocado dengan jenis PLU 4770 terjual
-* `Total Bags` : banyaknya avocado yang terjual pada tas ukuran kecil, besar, dan ekstra besar 
-* `Small Bags` : banyaknya avocado yang terjual pada tas ukuran kecil
-* `Large Bags` : banyaknya avocado yang terjual pada tas ukuran besar
-* `XLarge Bags` : banyaknya avocado yang terjual pada tas ukuran ekstra besar
+* `Total.Volume` : jumlah seluruh avocado yang terjual
+* `X4046` : banyaknya avocado dengan jenis PLU 4046 terjual
+* `X4225` : banyaknya avocado dengan jenis PLU 4225 terjual
+* `X4770` : banyaknya avocado dengan jenis PLU 4770 terjual
+* `Total.Bags` : banyaknya avocado yang terjual pada tas ukuran kecil, besar, dan ekstra besar 
+* `Small.Bags` : banyaknya avocado yang terjual pada tas ukuran kecil
+* `Large.Bags` : banyaknya avocado yang terjual pada tas ukuran besar
+* `XLarge.Bags` : banyaknya avocado yang terjual pada tas ukuran ekstra besar
 * `type` : jenis avocado, konvensional atau organik
 * `year` : tahun
 * `region` : kota tempat observasi
@@ -61,7 +61,6 @@ Deskripsi data:
 ```{r}
 # untuk data wrangling
 library(dplyr)
-library(magrittr)
 library(lubridate)
 
 # untuk visualisasi
@@ -81,6 +80,10 @@ Pertama, kita akan coba cek pada data `avo` terdapat *missing value* atau tidak.
 colSums(is.na(avo))
 ```
 
+```{r}
+glimpse(avo)
+```
+
 Tahap selanjutnya kita ingin coba bersihkan datanya dengan beberapa step tahapan yaitu sebagai berikut :
 
 * mengganti format seluruh nama kolom menjadi huruf kecil
@@ -88,10 +91,9 @@ Tahap selanjutnya kita ingin coba bersihkan datanya dengan beberapa step tahapan
 * membuang kolom yang tidak diperlukan
 
 ```{r}
-avo %<>% 
-  rename_all(. %>% tolower) %>% 
+avo <- avo %>% 
+  rename_all(tolower) %>% 
   mutate(date = ymd(date)) %>% 
-  mutate_if(is.character, as.factor) %>% 
   select(-x)
 head(avo)
 ```
@@ -144,7 +146,7 @@ agg_or <- avo %>%
   summarise(meanprice = mean(averageprice)) %>% 
   ungroup() %>% 
   arrange(meanprice) %>% 
-  top_n(10)
+  head(10)
 
 top10_region_or <- agg_or %>% 
   pull(region)
@@ -175,7 +177,7 @@ p <- or_agg %>%
 p
 ```
 
-Ternyata harga avocado organik terendah dapat kita peroleh di Charlotte, bahkan pada tahun 2018 pun di Charlotte harga avocado organiknya termasuk rendah yaitu seharga `$1.38`. Pilihan lainnya adalah kita bisa membelinya di Raleigh Greensboro dengan rata-rata harga `$1.27`. 
+Ternyata harga avocado organik terendah dapat kita peroleh di Houston, bahkan pada tahun 2018 pun di Houston harga avocado organiknya termasuk rendah yaitu seharga `$1.36`. Pilihan lainnya adalah kita bisa membelinya di Raleigh Detroit dengan rata-rata harga `$1.31`. 
 
 ```{r}
 plotly::ggplotly(p, tooltip = "y")
@@ -190,7 +192,7 @@ agg_kon <- avo %>%
   summarise(meanprice = mean(averageprice)) %>% 
   ungroup() %>% 
   arrange(meanprice) %>% 
-  top_n(10)
+  head(10)
 
 top10_region_kon <- agg_kon %>% 
   pull(region)
@@ -221,7 +223,7 @@ p2 <- kon_agg %>%
 p2
 ```
 
-Kita dapat membelinya di Baltimore Washington atau San Francisco. Menarik jika dilihat bahwa harga avocado konvensional terendah pada tahun 2018 terdapat pada San Francisco dengan rata-rata harganya `$1.27`. 
+Kita dapat membelinya di West Text New Mexico. Menarik jika dilihat bahwa harga avocado konvensional terendah pada tahun 2018 terdapat pada Columbus dengan rata-rata harganya `$1.03`.
 
 ```{r}
 plotly::ggplotly(p2, tooltip = "y")
